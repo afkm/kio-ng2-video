@@ -1,6 +1,6 @@
 {
 	"name": "kio-ng2-video",
-	"version": "0.0.0",
+	"version": "0.0.1",
 	"description": "Video component",
 	"main": "./release/video.module",
 	"module": "./release/video.module",
