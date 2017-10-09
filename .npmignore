@@ -11,3 +11,13 @@ documentation
 /scripts
 
 /e2e
+
+/src
+
+/tsconfig-*.json
+
+/tsconfig.release.json
+
+/karma.conf.js
+
+/nodemon.json
