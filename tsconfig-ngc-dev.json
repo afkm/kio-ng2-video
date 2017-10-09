@@ -9,12 +9,12 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "lib": ["es2015", "dom"],
-    "noImplicitAny": false,
+    "noImplicitAny": true,
     "suppressImplicitAnyIndexErrors": true
   },
 
   "files": [
-    "build/video.module.ts"
+    "build/module.ts"
   ],
 
   "angularCompilerOptions": {
