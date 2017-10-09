@@ -2,8 +2,12 @@ import { Component, Input, Output, QueryList, EventEmitter, ViewChild, ElementRe
 import { RoutableComponent, ContentDataComponent, ContentLoaderDirective, ResizingService } from 'kio-ng2-component-routing'
 import { VideoState } from '../../enums/video-state.enum'
 import { KioOEmbed, KioOEmbedData } from 'kio-ng2-data'
+// noinspection TypeScriptCheckImport
+import * as VimeoPlayer from "@vimeo/player/dist/player.js";
 import { Player } from '@vimeo/player'
 
+
+declare const VimeoPlayer:{new (el:HTMLElement,opts:any):Player}
 
 @RoutableComponent({
   selector: 'publication-video',
@@ -63,7 +67,7 @@ export class VideoComponent extends ContentDataComponent {
   }
 
   initVimeo(){
-    this.vimeoPlayer = new Player(this.container.nativeElement,{
+    this.vimeoPlayer = new VimeoPlayer(this.container.nativeElement,{
       id: this.data.oEmbed.raw.video_id
     })
     this.vimeoPlayer.on('loaded',()=>this.updateVideoState(VideoState.ready))

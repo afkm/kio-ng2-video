@@ -17,8 +17,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { Input, Output, EventEmitter, ViewChild, ViewEncapsulation } from '@angular/core';
 import { RoutableComponent, ContentDataComponent } from 'kio-ng2-component-routing';
 import { VideoState } from '../../enums/video-state.enum';
-import { Player } from '@vimeo/player';
-var VideoComponent = /** @class */ (function (_super) {
+// noinspection TypeScriptCheckImport
+import * as VimeoPlayer from "@vimeo/player/dist/player.js";
+var VideoComponent = (function (_super) {
     __extends(VideoComponent, _super);
     function VideoComponent() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -66,7 +67,7 @@ var VideoComponent = /** @class */ (function (_super) {
     };
     VideoComponent.prototype.initVimeo = function () {
         var _this = this;
-        this.vimeoPlayer = new Player(this.container.nativeElement, {
+        this.vimeoPlayer = new VimeoPlayer(this.container.nativeElement, {
             id: this.data.oEmbed.raw.video_id
         });
         this.vimeoPlayer.on('loaded', function () { return _this.updateVideoState(VideoState.ready); });
@@ -91,25 +92,25 @@ var VideoComponent = /** @class */ (function (_super) {
     VideoComponent.prototype.onResize = function () {
         this.resizeContent();
     };
-    VideoComponent.propDecorators = {
-        'playing': [{ type: Input, args: ['playing',] },],
-        'stateChanges': [{ type: Output },],
-        'container': [{ type: ViewChild, args: ['container',] },],
-        'iframe': [{ type: ViewChild, args: ['iframe',] },],
-        'iframeQuery': [{ type: ViewChild, args: ['iframe',] },],
-    };
-    VideoComponent = __decorate([
-        RoutableComponent({
-            selector: 'publication-video',
-            templateUrl: './video.component.html',
-            styleUrls: ['./video.component.css'],
-            encapsulation: ViewEncapsulation.None,
-            queryable: {
-                type: 'src'
-            }
-        })
-    ], VideoComponent);
     return VideoComponent;
 }(ContentDataComponent));
+VideoComponent.propDecorators = {
+    'playing': [{ type: Input, args: ['playing',] },],
+    'stateChanges': [{ type: Output },],
+    'container': [{ type: ViewChild, args: ['container',] },],
+    'iframe': [{ type: ViewChild, args: ['iframe',] },],
+    'iframeQuery': [{ type: ViewChild, args: ['iframe',] },],
+};
+VideoComponent = __decorate([
+    RoutableComponent({
+        selector: 'publication-video',
+        templateUrl: './video.component.html',
+        styleUrls: ['./video.component.css'],
+        encapsulation: ViewEncapsulation.None,
+        queryable: {
+            type: 'src'
+        }
+    })
+], VideoComponent);
 export { VideoComponent };
 //# sourceMappingURL=video.component.js.map
