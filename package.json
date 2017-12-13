@@ -2,9 +2,9 @@
 	"name": "kio-ng2-video",
 	"version": "0.0.1",
 	"description": "Video component",
-	"main": "./release/video.module",
-	"module": "./release/video.module",
-	"typings": "./release/video.module.d.ts",
+	"main": "./src/video.module",
+	"module": "./src/video.module",
+	"typings": "./src/video.module.ts",
 	"scripts": {
 		"start": "ng serve",
 		"test": "ts-mocha ./src/**/*.spec.ts",

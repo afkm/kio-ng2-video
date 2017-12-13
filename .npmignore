@@ -12,8 +12,6 @@ documentation
 
 /e2e
 
-/src
-
 /tsconfig-*.json
 
 /tsconfig.release.json

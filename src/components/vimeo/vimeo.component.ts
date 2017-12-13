@@ -2,6 +2,8 @@ import { Component, Input, Output, QueryList, EventEmitter, ViewChild, ElementRe
 import { RoutableComponent, ContentDataComponent, ContentLoaderDirective, ResizingService } from 'kio-ng2-component-routing'
 import { VideoState } from '../../enums/video-state.enum'
 import { KioOEmbed, KioOEmbedData } from 'kio-ng2-data'
+import { AbstractVideoComponent } from '../abstract/abstract.component'
+
 // noinspection TypeScriptCheckImport
 import * as VimeoPlayer from "@vimeo/player/dist/player.js";
 import { Player } from '@vimeo/player'
@@ -10,52 +12,20 @@ import { Player } from '@vimeo/player'
 declare const VimeoPlayer:{new (el:HTMLElement,opts:any):Player}
 
 @RoutableComponent({
-  selector: 'publication-video',
-  templateUrl: './video.component.html',
-  styleUrls: ['./video.component.scss'],
+  selector: 'publication-vimeo-player',
+  templateUrl: './vimeo.component.html',
+  styleUrls: ['./vimeo.component.scss'],
   encapsulation: ViewEncapsulation.None,
   queryable: {
     type: 'src' 
   }
 })
-export class VideoComponent extends ContentDataComponent {
-
-  videoState:VideoState=VideoState.loading
-
-  @Input('playing') set playing ( playing:boolean ) {
-    this.stopped = playing === false
-    if ( playing === true ) {
-      this.playVideo()
-    }
-  }
-
-  @Output()
-  stateChanges:EventEmitter<VideoState>=new EventEmitter()
-
-  stopped:boolean=true
+export class VimeoVideoComponent extends AbstractVideoComponent {
 
   protected vimeoPlayer:Player
 
   
-  protected updateVideoState ( nextState:VideoState ) {
-    this.videoState = nextState
-    this.stateChanges.emit(nextState)
-    if ( nextState === VideoState.finished ) {
-      this.stopped = true
-    }
-  }
-
-  onUpdate(){
-    super.onUpdate()
-
-    this.initVimeo()
-
-    if (this.node && this.node.modifiers) {
-      this.fitToBox = this.node.modifiers.indexOf('fit-to-box') !== -1
-    }
-  }
-
-  playVideo ( ) {
+  public playVideo ( ) {
     if ( !this.vimeoPlayer ) {
       this.stateChanges.filter ( s => s === VideoState.ready ).take(1).subscribe ( s => {
         this.playVideo()
@@ -66,7 +36,7 @@ export class VideoComponent extends ContentDataComponent {
     }
   }
 
-  initVimeo(){
+  protected prepareVideo() {
 
     if ( this.node.headers['mimeType'] && this.node.headers['mimeType'].indexOf('image') === 0 ) {
       throw Error(`Wrong mime type for video: ${this.node.headers['mimeType']}`)
@@ -81,37 +51,14 @@ export class VideoComponent extends ContentDataComponent {
     this.vimeoPlayer.on('ended',()=>this.updateVideoState(VideoState.finished))
   }
 
-  getRatio ():number { 
-    if ( this.node.headers ) 
-    { 
-      return this.node.headers.ratio || 1 
-    } 
-    return 1 
-  }
 
-  /**
-   * reference to container element in template
-   * @param {ElementRef} 'container' container element
-   */
-  @ViewChild('container') container:ElementRef
-  @ViewChild('iframe') iframe:ElementRef
-  @ViewChild('iframe') iframeQuery:QueryList<ElementRef>
-  
-
-  getContainerBounds(){
+  protected getContainerBounds(){
     return this.container.nativeElement.getBoundingClientRect() 
   }
 
-  resizeContent () {
-    const bounds = this.container.nativeElement.getBoundingClientRect()
-    this.iframe.nativeElement.setAttribute ( 'width' , bounds.width + 'px' )
-    this.iframe.nativeElement.setAttribute ( 'height' , (bounds.width / this.getRatio()) + 'px' )
+  updateBounds ( size:{width:number, height:number} ) {
+    this.iframe.nativeElement.setAttribute ( 'width' , size.width + 'px' )
+    this.iframe.nativeElement.setAttribute ( 'height' , (size.width / this.getRatio()) + 'px' )
   }
-
-  protected onResize () {
-    this.resizeContent()
-  }
-
-  fitToBox:boolean = false
 
 }
