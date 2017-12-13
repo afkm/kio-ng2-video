@@ -67,6 +67,11 @@ export class VideoComponent extends ContentDataComponent {
   }
 
   initVimeo(){
+
+    if ( this.node.headers['mimeType'] && this.node.headers['mimeType'].indexOf('image') === 0 ) {
+      throw Error(`Wrong mime type for video: ${this.node.headers['mimeType']}`)
+    }
+
     this.vimeoPlayer = new VimeoPlayer(this.container.nativeElement,{
       id: this.data.oEmbed.raw.video_id
     })
