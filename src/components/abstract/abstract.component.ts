@@ -1,8 +1,12 @@
 import { Component, Input, Output, QueryList, EventEmitter, ViewChild, ElementRef, ViewEncapsulation } from '@angular/core';
 import { RoutableComponent, ContentDataComponent, ContentLoaderDirective, ResizingService } from 'kio-ng2-component-routing'
 import { VideoState } from '../../enums/video-state.enum'
-import { KioOEmbed, KioOEmbedData } from 'kio-ng2-data'
+import { KioOEmbed, KioOEmbedData, KioContentModel } from 'kio-ng2-data'
 
+@Component({
+  selector: 'abstract-video',
+  template: ''
+})
 export abstract class AbstractVideoComponent extends ContentDataComponent {
 
   videoState:VideoState=VideoState.loading

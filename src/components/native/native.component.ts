@@ -3,7 +3,9 @@ import { RoutableComponent, ContentDataComponent, ContentLoaderDirective, Resizi
 import { VideoState } from '../../enums/video-state.enum'
 import { KioOEmbed, KioOEmbedData } from 'kio-ng2-data'
 import { AbstractVideoComponent } from '../abstract/abstract.component'
+import { VideoSource } from './interfaces'
 
+export { VideoSource } from './interfaces'
 
 @RoutableComponent({
   selector: 'publication-native-video',
@@ -16,23 +18,29 @@ import { AbstractVideoComponent } from '../abstract/abstract.component'
 })
 export class NativeVideoComponent extends AbstractVideoComponent {
 
+  public sources:VideoSource[]
+
+  @ViewChild('videoElement') videoElement:ElementRef
+
+
   public playVideo ( ) {
     
   }
 
   protected prepareVideo() {
 
-    if ( this.node.headers['mimeType'] && this.node.headers['mimeType'].indexOf('image') === 0 ) {
+    if ( this.node.headers['mimeType'] && this.node.headers['mimeType'].indexOf('video') !== 0 ) {
       throw Error(`Wrong mime type for video: ${this.node.headers['mimeType']}`)
     }
 
+    /*
     this.vimeoPlayer = new VimeoPlayer(this.container.nativeElement,{
       id: this.data.oEmbed.raw.video_id
     })
     this.vimeoPlayer.on('loaded',()=>this.updateVideoState(VideoState.ready))
     this.vimeoPlayer.on('play',()=>this.updateVideoState(VideoState.playing))
     this.vimeoPlayer.on('pause',()=>this.updateVideoState(VideoState.paused))
-    this.vimeoPlayer.on('ended',()=>this.updateVideoState(VideoState.finished))
+    this.vimeoPlayer.on('ended',()=>this.updateVideoState(VideoState.finished))*/
   }
 
 

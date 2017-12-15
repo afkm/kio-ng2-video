@@ -1,0 +1,5 @@
+Video Type: {{ videoType | async }}
+<ng-container [ngSwitch]="videoType">
+  <publication-vimeo-player *ngSwitchCase="0" [node]="node"></publication-vimeo-player>
+  <publication-native-player *ngSwitchCase="1" [node]="node"></publication-native-player>
+</ng-container>
