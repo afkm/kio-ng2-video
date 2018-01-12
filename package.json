@@ -11,8 +11,6 @@
 		"pretest": "npm run build",
 		"test:watch": "./scripts/watch.sh test",
 		"lint": "tslint ./src/**/*.ts ./test/**/*.ts",
-		"version": "npm run build",
-		"postversion": "git push && git push --tags",
 		"predoc": "rm -rf ./documentation",
 		"doc": "compodoc -p ./tsconfig-doc.json -d ./documentation/",
 		"sass:build": "./scripts/compile-scss.sh ./build",
