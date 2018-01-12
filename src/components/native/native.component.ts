@@ -1,22 +1,27 @@
 import { Component, Input, Output, QueryList, EventEmitter, ViewChild, ElementRef, ViewEncapsulation } from '@angular/core';
 import { RoutableComponent, ContentDataComponent, ContentLoaderDirective, ResizingService } from 'kio-ng2-component-routing'
 import { VideoState } from '../../enums/video-state.enum'
-import { KioOEmbed, KioOEmbedData } from 'kio-ng2-data'
+import { VideoType } from '../../enums/video-type.enum'
+import { KioOEmbed, KioOEmbedData, KioContentModel } from 'kio-ng2-data'
+import { VideoData } from 'kio-ng2-ctn'
 import { AbstractVideoComponent } from '../abstract/abstract.component'
 import { VideoSource } from './interfaces'
-
 export { VideoSource } from './interfaces'
+import { KioVideoData } from '../../interfaces/video-node'
 
-@RoutableComponent({
+@Component({
+  moduleId: module.id,
   selector: 'publication-native-video',
   templateUrl: './native.component.html',
   styleUrls: ['./native.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  queryable: {
-    type: 'src' 
-  }
+  encapsulation: ViewEncapsulation.None
 })
-export class NativeVideoComponent extends AbstractVideoComponent {
+export class NativeVideoComponent extends AbstractVideoComponent<'native'> {
+
+  @Input() node:KioContentModel
+
+  @Input() controls:boolean
+  @Input() autoplay:boolean
 
   public sources:VideoSource[]
 
@@ -29,13 +34,19 @@ export class NativeVideoComponent extends AbstractVideoComponent {
 
   protected prepareVideo() {
 
-    if ( this.node.headers['mimeType'] && this.node.headers['mimeType'].indexOf('video') !== 0 ) {
-      throw Error(`Wrong mime type for video: ${this.node.headers['mimeType']}`)
+    if ( this.videoData.headers['mimeType'] && this.videoData.headers['mimeType'].indexOf('video') !== 0 ) {
+      throw Error(`Wrong mime type for video: ${this.videoData.headers['mimeType']}`)
     }
 
+    this.sources = [
+      {
+        mimeType: this.videoData.headers.mimeType,
+        src: this.videoData.raw.link
+      }
+    ]
     /*
     this.vimeoPlayer = new VimeoPlayer(this.container.nativeElement,{
-      id: this.data.oEmbed.raw.video_id
+      id: this.node.oEmbed.raw.video_id
     })
     this.vimeoPlayer.on('loaded',()=>this.updateVideoState(VideoState.ready))
     this.vimeoPlayer.on('play',()=>this.updateVideoState(VideoState.playing))
@@ -49,8 +60,22 @@ export class NativeVideoComponent extends AbstractVideoComponent {
   }
 
   updateBounds ( size:{width:number, height:number} ) {
-    this.iframe.nativeElement.setAttribute ( 'width' , size.width + 'px' )
-    this.iframe.nativeElement.setAttribute ( 'height' , (size.width / this.getRatio()) + 'px' )
+
+    this.width = size.width
+    this.height = size.height
+
+    /*this.iframe.nativeElement.setAttribute ( 'width' , size.width + 'px' )
+    this.iframe.nativeElement.setAttribute ( 'height' , (size.width / this.getRatio()) + 'px' )*/
+  }
+
+  updateWidth ( width:number ) {
+    this.updateBounds ( {width, height: width / this.getRatio()} )
+  }
+
+  onEvent ( eventName:string, event:Event ) {
+
+    console.log('video event "%s"', eventName, event)
+
   }
 
 }

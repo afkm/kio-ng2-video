@@ -1,6 +1,7 @@
 import { Component, Input, Output, QueryList, EventEmitter, ViewChild, ElementRef, ViewEncapsulation } from '@angular/core';
 import { RoutableComponent, ContentDataComponent, ContentLoaderDirective, ResizingService } from 'kio-ng2-component-routing'
 import { VideoState } from '../../enums/video-state.enum'
+import { VideoType } from '../../enums/video-type.enum'
 import { KioOEmbed, KioOEmbedData } from 'kio-ng2-data'
 import { AbstractVideoComponent } from '../abstract/abstract.component'
 
@@ -11,16 +12,17 @@ import { Player } from '@vimeo/player'
 
 declare const VimeoPlayer:{new (el:HTMLElement,opts:any):Player}
 
-@RoutableComponent({
+@Component({
+  moduleId: module.id,
   selector: 'publication-vimeo-player',
   templateUrl: './vimeo.component.html',
   styleUrls: ['./vimeo.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  queryable: {
-    type: 'src' 
-  }
+  encapsulation: ViewEncapsulation.None
 })
-export class VimeoVideoComponent extends AbstractVideoComponent {
+export class VimeoVideoComponent extends AbstractVideoComponent<'vimeo'> {
+
+  @Input() data:any
+
 
   protected vimeoPlayer:Player
 
@@ -38,12 +40,12 @@ export class VimeoVideoComponent extends AbstractVideoComponent {
 
   protected prepareVideo() {
 
-    if ( this.node.headers['mimeType'] && this.node.headers['mimeType'].indexOf('image') === 0 ) {
-      throw Error(`Wrong mime type for video: ${this.node.headers['mimeType']}`)
+    if ( this.data['mimeType'] && this.data['mimeType'].indexOf('image') === 0 ) {
+      throw Error(`Wrong mime type for video: ${this.data['mimeType']}`)
     }
 
     this.vimeoPlayer = new VimeoPlayer(this.container.nativeElement,{
-      id: this.data.oEmbed.raw.video_id
+      id: this.data.raw.video_id
     })
     this.vimeoPlayer.on('loaded',()=>this.updateVideoState(VideoState.ready))
     this.vimeoPlayer.on('play',()=>this.updateVideoState(VideoState.playing))

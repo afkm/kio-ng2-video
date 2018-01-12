@@ -1,3 +1,6 @@
-<video controls #videoElement>
+<video 
+  [controls]="controls" [autoplay]="autoplay" [loop]="loop"
+  (load)="onEvent('load',$event)"
+  #videoElement>
   <source *ngFor="let source of sources; let sourceIndex = index" [src]="source.src" />
 </video>

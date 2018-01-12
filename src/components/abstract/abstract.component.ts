@@ -1,15 +1,28 @@
-import { Component, Input, Output, QueryList, EventEmitter, ViewChild, ElementRef, ViewEncapsulation } from '@angular/core';
+import { Observable } from 'rxjs/Observable'
+import { Component, Input, Output, QueryList, EventEmitter, ViewChild, ElementRef, HostBinding, ViewEncapsulation, AfterViewInit } from '@angular/core';
 import { RoutableComponent, ContentDataComponent, ContentLoaderDirective, ResizingService } from 'kio-ng2-component-routing'
 import { VideoState } from '../../enums/video-state.enum'
+import { VideoType } from '../../enums/video-type.enum'
 import { KioOEmbed, KioOEmbedData, KioContentModel } from 'kio-ng2-data'
+import { KioVideoData } from '../../interfaces/video-node'
 
-@Component({
-  selector: 'abstract-video',
-  template: ''
-})
-export abstract class AbstractVideoComponent extends ContentDataComponent {
+
+export class AbstractVideoComponent <T extends keyof typeof VideoType> implements AfterViewInit {
+
+  @Input()
+  autoplay:boolean
+  
+  @Input()
+  loop:boolean
+  
+  @Input()
+  controls:boolean
+
+  videoType:T
 
   videoState:VideoState=VideoState.loading
+
+  ratio:number
 
   @Output()
   stateChanges:EventEmitter<VideoState>=new EventEmitter()
@@ -17,6 +30,12 @@ export abstract class AbstractVideoComponent extends ContentDataComponent {
   stopped:boolean=true
 
   fitToBox:boolean=false
+
+  @Input()
+  videoData:KioVideoData
+
+  @HostBinding('style.width.%') width:number=100
+  @HostBinding('style.height.%') height:number=100
   
   @Input('playing') set playing ( playing:boolean ) {
     this.stopped = playing === false
@@ -24,6 +43,10 @@ export abstract class AbstractVideoComponent extends ContentDataComponent {
       this.playVideo()
     }
   }
+
+  @Output('playing') playingEvents=this.stateChanges.map ( (state:VideoState):boolean => {
+    return state === VideoState.playing
+  } )
 
   /**
    * reference to container element in template
@@ -41,30 +64,14 @@ export abstract class AbstractVideoComponent extends ContentDataComponent {
     }
   }
 
-
-  onUpdate(){
-    super.onUpdate()
-
-    this.prepareVideo()
-
-    if ( this.node && this.node.modifiers ) {
-      this.fitToBox = this.node.modifiers.indexOf('fit-to-box') !== -1
-    }
-
-  }
-
   getRatio ():number { 
-    if ( this.node.headers ) 
-    { 
-      return this.node.headers.ratio || 1 
-    } 
-    return 1 
+    return this.ratio
   }
 
   resizeContent () {
 
     const size = this.getContainerBounds()
-    this.updateBounds ( size )
+    //this.updateBounds ( size )
 
   }
 
@@ -72,12 +79,27 @@ export abstract class AbstractVideoComponent extends ContentDataComponent {
     this.resizeContent()
   }
 
-  protected abstract updateBounds ( size:{width:number, height:number} )
+  protected updateBounds ( size:{width:number, height:number} ) {
 
-  public abstract playVideo ():void
+    this.width = size.width
+    this.height = size.height
 
-  protected abstract prepareVideo ():void
+  }
 
-  protected abstract getContainerBounds ():{width: number, height:number}
+  public playVideo ():void {}
+
+  protected prepareVideo ():void {}
+
+  protected getContainerBounds ():{width: number, height:number} {
+    return undefined
+  }
+
+  ngAfterViewInit() {
+    process.nextTick(()=>{
+      this.prepareVideo()
+      //this.updateBounds( this.videoData.raw )
+    })
+  }
+
 
 }
