@@ -21,8 +21,6 @@ declare const VimeoPlayer:{new (el:HTMLElement,opts:any):Player}
 })
 export class VimeoVideoComponent extends AbstractVideoComponent<'vimeo'> {
 
-  @Input() data:any
-
 
   protected vimeoPlayer:Player
 
@@ -39,13 +37,8 @@ export class VimeoVideoComponent extends AbstractVideoComponent<'vimeo'> {
   }
 
   protected prepareVideo() {
-
-    if ( this.data['mimeType'] && this.data['mimeType'].indexOf('image') === 0 ) {
-      throw Error(`Wrong mime type for video: ${this.data['mimeType']}`)
-    }
-
     this.vimeoPlayer = new VimeoPlayer(this.container.nativeElement,{
-      id: this.data.raw.video_id
+      id: this.videoData.oEmbed.raw.video_id
     })
     this.vimeoPlayer.on('loaded',()=>this.updateVideoState(VideoState.ready))
     this.vimeoPlayer.on('play',()=>this.updateVideoState(VideoState.playing))

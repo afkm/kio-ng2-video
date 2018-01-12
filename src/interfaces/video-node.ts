@@ -9,6 +9,13 @@ export interface KioVideoData {
     duration: number
   }
 
+  oEmbed?: {
+    raw: {
+      video_id: string
+      [key: string]: any
+    }
+  }
+
   headers?: {
     mimeType: string
     ratio: number
