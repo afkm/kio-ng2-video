@@ -88,7 +88,14 @@ export class VideoWrapperComponent extends ContentDataComponent {
   }
 
   onNodeUpdate () {
-    this.videoType = this.videoTypeByMimeType(this.node.headers.mimeType)
+    const mimeType = this.node.headers.mimeType
+    
+    if ( mimeType ) {
+
+      this.videoType = this.videoTypeByMimeType(mimeType)
+
+    }
+
     super.onNodeUpdate()
   }
 
@@ -99,6 +106,13 @@ export class VideoWrapperComponent extends ContentDataComponent {
   }
 
   setData ( data:any ) {
+
+    if ( !this.videoType ) {
+      // has not been set on node update, must be headers from data then
+      //this.videoType = this.videoTypeByMimeType ( data )
+      this.videoData = data
+      this.videoType = this.videoTypeByMimeType(this.videoData.headers.mimeType)
+    }
 
     super.setData(data)
 
@@ -126,12 +140,8 @@ export class VideoWrapperComponent extends ContentDataComponent {
 
   }
 
-  protected assignVideoData ( data:KioVideoData ) {
-    this.videoData = data    
-  }
-
-  protected processBackendResponse ( response:any ) {
-    this.assignVideoData(response)
+  protected readDataResponse ( response:Response ) {
+    return response
   }
 
   protected onResize () {
