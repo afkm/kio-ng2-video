@@ -27,7 +27,7 @@ export class VideoWrapperComponent extends ContentDataComponent {
   hostElement:ElementRef=this.injector.get(ElementRef)
 
   @Output()
-  events:EventEmitter<VideoEvent<keyof typeof VideoState>>=new EventEmitter()
+  events:EventEmitter<CustomEvent>=new EventEmitter()
 
   @Output()
   stateChanges=this.events.map ( event => VideoState[event.type] )
@@ -90,19 +90,9 @@ export class VideoWrapperComponent extends ContentDataComponent {
 
   onNodeUpdate () {
     this.videoType = this.videoTypeByMimeType(this.node.headers.mimeType)
-    console.log('identified video of type', this.videoType)
     super.onNodeUpdate()
   }
 
-
-  onUpdate () {
-    super.onUpdate()
-    console.log('video component :: data udpate', this)
-  }
-
-  ngOnInit () {
-    console.log('init video component', this)
-  }
 
   ngAfterViewInit () {
     super.ngAfterViewInit()
@@ -117,9 +107,9 @@ export class VideoWrapperComponent extends ContentDataComponent {
 
   onChildStateChange ( videoState:VideoState ) {
 
-    console.log('child video element changed:', videoState )
     const nextStateName = VideoState[videoState] as keyof typeof VideoState
-    this.events.emit(new VideoEvent(nextStateName))
+    const event = new CustomEvent(nextStateName)
+    this.events.emit(event)
 
   }
 

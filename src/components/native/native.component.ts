@@ -74,7 +74,11 @@ export class NativeVideoComponent extends AbstractVideoComponent<'native'> {
 
   onEvent ( eventName:string, event:Event ) {
 
-    console.log('video event "%s"', eventName, event)
+    if ( eventName in VideoState ) {
+
+      this.updateVideoState ( VideoState[eventName] )
+
+    }
 
   }
 

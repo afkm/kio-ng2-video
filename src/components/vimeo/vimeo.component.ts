@@ -44,6 +44,12 @@ export class VimeoVideoComponent extends AbstractVideoComponent<'vimeo'> {
     this.vimeoPlayer.on('play',()=>this.updateVideoState(VideoState.playing))
     this.vimeoPlayer.on('pause',()=>this.updateVideoState(VideoState.paused))
     this.vimeoPlayer.on('ended',()=>this.updateVideoState(VideoState.finished))
+
+    if ( this.autoplay ) {
+
+      this.playVideo()
+
+    }
   }
 
 
