@@ -3,11 +3,9 @@ import { RoutableComponent, ContentDataComponent, ContentLoaderDirective, Resizi
 import { VideoState } from '../../enums/video-state.enum'
 import { VideoType } from '../../enums/video-type.enum'
 import { KioOEmbed, KioOEmbedData, KioContentModel } from 'kio-ng2-data'
-import { VideoData } from 'kio-ng2-ctn'
 import { AbstractVideoComponent } from '../abstract/abstract.component'
 import { VideoSource } from './interfaces'
 export { VideoSource } from './interfaces'
-import { KioVideoData } from '../../interfaces/video-node'
 
 @Component({
   moduleId: module.id,

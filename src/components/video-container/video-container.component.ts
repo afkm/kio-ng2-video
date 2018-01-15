@@ -3,7 +3,6 @@ import { Observable } from 'rxjs/Observable'
 import { RoutableComponent, ContentDataComponent, ContentLoaderDirective, ResizingService } from 'kio-ng2-component-routing'
 import { KioVideoData } from '../../interfaces/video-node'
 import { VideoState } from '../../enums/video-state.enum'
-import { VideoData } from 'kio-ng2-ctn'
 import { VideoEvent } from '../../events/event.class'
 
 
