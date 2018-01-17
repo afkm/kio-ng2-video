@@ -9,8 +9,9 @@
     "js": "node --harmony"
   },
   "watch": [
-    "./"
+    "./src"
   ],
+  "exts": "ts js json html scss",
   "env": {
     "NODE_ENV": "development"
   }

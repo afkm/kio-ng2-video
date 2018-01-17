@@ -45,6 +45,8 @@ export class VideoComponent extends ContentDataComponent {
     }
   }
 
+  // data lifecycle hooks
+  
   onUpdate(){
     super.onUpdate()
 
@@ -53,6 +55,11 @@ export class VideoComponent extends ContentDataComponent {
     if (this.node && this.node.modifiers) {
       this.fitToBox = this.node.modifiers.indexOf('fit-to-box') !== -1
     }
+  }
+
+
+  protected readDataResponse ( data:any ) {
+    return data
   }
 
   playVideo ( ) {
@@ -89,8 +96,6 @@ export class VideoComponent extends ContentDataComponent {
    * @param {ElementRef} 'container' container element
    */
   @ViewChild('container') container:ElementRef
-  @ViewChild('iframe') iframe:ElementRef
-  @ViewChild('iframe') iframeQuery:QueryList<ElementRef>
   
 
   getContainerBounds(){
@@ -98,9 +103,7 @@ export class VideoComponent extends ContentDataComponent {
   }
 
   resizeContent () {
-    const bounds = this.container.nativeElement.getBoundingClientRect()
-    this.iframe.nativeElement.setAttribute ( 'width' , bounds.width + 'px' )
-    this.iframe.nativeElement.setAttribute ( 'height' , (bounds.width / this.getRatio()) + 'px' )
+    // skip; sized by css
   }
 
   protected onResize () {
