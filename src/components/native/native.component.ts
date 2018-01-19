@@ -21,6 +21,8 @@ export class NativeVideoComponent extends AbstractVideoComponent<'native'> {
   @Input() controls:boolean
   @Input() autoplay:boolean
 
+  @Input() muted:boolean
+
   public sources:VideoSource[]
 
   @ViewChild('videoElement') videoElement:ElementRef
