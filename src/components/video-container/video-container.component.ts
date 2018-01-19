@@ -52,6 +52,7 @@ export class VideoWrapperComponent extends ContentDataComponent {
   @Output('playing') playingEvents=this.stateChanges.map ( (state:VideoState):boolean => {
     return state === VideoState.playing
   } )
+  
   videoData:KioVideoData
 
   stopped:boolean
@@ -88,6 +89,7 @@ export class VideoWrapperComponent extends ContentDataComponent {
   }
 
   onNodeUpdate () {
+    
     const mimeType = this.node.headers.mimeType
     
     if ( mimeType ) {
@@ -97,6 +99,7 @@ export class VideoWrapperComponent extends ContentDataComponent {
     }
 
     super.onNodeUpdate()
+
   }
 
 
@@ -107,10 +110,11 @@ export class VideoWrapperComponent extends ContentDataComponent {
 
   setData ( data:any ) {
 
-    if ( !this.videoType ) {
+    this.videoData = data
+      
+    if ( typeof this.videoType === undefined ) {
       // has not been set on node update, must be headers from data then
       //this.videoType = this.videoTypeByMimeType ( data )
-      this.videoData = data
       this.videoType = this.videoTypeByMimeType(this.videoData.headers.mimeType)
     }
 
