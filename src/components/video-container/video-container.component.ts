@@ -41,6 +41,9 @@ export class VideoWrapperComponent extends ContentDataComponent {
   @Input()
   loop:boolean=false
 
+  @Input()
+  muted:boolean=false
+
 
   @Input('playing') set playing ( playing:boolean ) {
     this.stopped = playing === false
@@ -52,7 +55,7 @@ export class VideoWrapperComponent extends ContentDataComponent {
   @Output('playing') playingEvents=this.stateChanges.map ( (state:VideoState):boolean => {
     return state === VideoState.playing
   } )
-  
+
   videoData:KioVideoData
 
   stopped:boolean
@@ -61,14 +64,14 @@ export class VideoWrapperComponent extends ContentDataComponent {
 
   videoType:VideoType
 
-  @HostBinding('class.fit__to__box') 
+  @HostBinding('class.fit__to__box')
   fitToBox:boolean=true
 
   private _renderer:Renderer2=this.injector.get(Renderer2)
 
 
   playVideo () {
-    
+
   }
 
   getContainerBounds ():{width:number,height:number} {
@@ -89,9 +92,9 @@ export class VideoWrapperComponent extends ContentDataComponent {
   }
 
   onNodeUpdate () {
-    
+
     const mimeType = this.node.headers.mimeType
-    
+
     if ( mimeType ) {
 
       this.videoType = this.videoTypeByMimeType(mimeType)
@@ -111,7 +114,7 @@ export class VideoWrapperComponent extends ContentDataComponent {
   setData ( data:any ) {
 
     this.videoData = data
-      
+
     if ( typeof this.videoType === undefined ) {
       // has not been set on node update, must be headers from data then
       //this.videoType = this.videoTypeByMimeType ( data )
