@@ -1,6 +1,5 @@
-<video 
-  [controls]="controls" [autoplay]="autoplay" [loop]="loop"
-  [muted]="muted"
+<video
+  [muted]="muted" [controls]="controls" [autoplay]="autoplay" [loop]="loop"
   (loadstart)="onEvent('loading',$event)"
   (canplay)="onEvent('ready',$event)"
   (play)="onEvent('playing',$event)"
