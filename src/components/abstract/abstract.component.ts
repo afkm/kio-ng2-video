@@ -11,12 +11,15 @@ export class AbstractVideoComponent <T extends keyof typeof VideoType> implement
 
   @Input()
   autoplay:boolean
-  
+
   @Input()
   loop:boolean
-  
+
   @Input()
   controls:boolean
+
+  @Input()
+  muted:boolean
 
   videoType:T
 
@@ -36,7 +39,7 @@ export class AbstractVideoComponent <T extends keyof typeof VideoType> implement
 
   @HostBinding('style.width.%') width:number=100
   @HostBinding('style.height.%') height:number=100
-  
+
   @Input('playing') set playing ( playing:boolean ) {
     this.stopped = playing === false
     if ( playing === true ) {
@@ -55,7 +58,7 @@ export class AbstractVideoComponent <T extends keyof typeof VideoType> implement
   @ViewChild('container') container:ElementRef
   @ViewChild('iframe') iframe:ElementRef
   @ViewChild('iframe') iframeQuery:QueryList<ElementRef>
-  
+
   protected updateVideoState ( nextState:VideoState ) {
     this.videoState = nextState
     this.stateChanges.emit(nextState)
@@ -64,7 +67,7 @@ export class AbstractVideoComponent <T extends keyof typeof VideoType> implement
     }
   }
 
-  getRatio ():number { 
+  getRatio ():number {
     return this.ratio
   }
 
