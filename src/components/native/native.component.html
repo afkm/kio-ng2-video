@@ -1,12 +1,27 @@
-<video 
-  [controls]="controls" [autoplay]="autoplay" [loop]="loop"
-  [muted]="muted"
-  (loadstart)="onEvent('loading',$event)"
-  (canplay)="onEvent('ready',$event)"
-  (play)="onEvent('playing',$event)"
-  (playing)="onEvent('playing',$event)"
-  (pause)="onEvent('paused',$event)"
-  (ended)="onEvent('finished',$event)"
-  #videoElement>
-  <source *ngFor="let source of sources; let sourceIndex = index" [src]="source.src" />
-</video>
+<ng-container *ngIf="muted">
+    <video
+        muted [controls]="controls" [autoplay]="autoplay" [loop]="loop" [poster]="poster"
+        (loadstart)="onEvent('loading',$event)"
+        (canplay)="onEvent('ready',$event)"
+        (play)="onEvent('playing',$event)"
+        (playing)="onEvent('playing',$event)"
+        (pause)="onEvent('paused',$event)"
+        (ended)="onEvent('finished',$event)"
+        #videoElement>
+        <source *ngFor="let source of sources; let sourceIndex = index" [src]="source.src" />
+    </video>
+</ng-container>
+
+<ng-container *ngIf="!muted">
+    <video
+        [controls]="controls" [autoplay]="autoplay" [loop]="loop" [poster]="poster"
+        (loadstart)="onEvent('loading',$event)"
+        (canplay)="onEvent('ready',$event)"
+        (play)="onEvent('playing',$event)"
+        (playing)="onEvent('playing',$event)"
+        (pause)="onEvent('paused',$event)"
+        (ended)="onEvent('finished',$event)"
+        #videoElement>
+        <source *ngFor="let source of sources; let sourceIndex = index" [src]="source.src" />
+    </video>
+</ng-container>

@@ -44,6 +44,9 @@ export class VideoWrapperComponent extends ContentDataComponent {
   @Input()
   muted:boolean=false
 
+  @Input()
+  poster:string
+
 
   @Input('playing') set playing ( playing:boolean ) {
     this.stopped = playing === false
