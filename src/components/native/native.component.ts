@@ -23,13 +23,15 @@ export class NativeVideoComponent extends AbstractVideoComponent<'native'> {
 
   @Input() muted:boolean
 
+  @Input() poster:string
+
   public sources:VideoSource[]
 
   @ViewChild('videoElement') videoElement:ElementRef
 
 
   public playVideo ( ) {
-    
+
   }
 
   protected prepareVideo() {
@@ -56,7 +58,7 @@ export class NativeVideoComponent extends AbstractVideoComponent<'native'> {
 
 
   protected getContainerBounds(){
-    return this.container.nativeElement.getBoundingClientRect() 
+    return this.container.nativeElement.getBoundingClientRect()
   }
 
   updateBounds ( size:{width:number, height:number} ) {

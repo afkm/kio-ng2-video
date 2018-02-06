@@ -1,6 +1,9 @@
 <ng-container *ngIf="videoData" [ngSwitch]="videoType">
+
   <publication-native-video *ngSwitchCase="0"
-    [controls]="controls" [autoplay]="autoplay" [muted]="muted" [loop]="loop" (stateChanges)="onChildStateChange($event)" [videoData]="videoData" ([playing])="playing"></publication-native-video>
+    [controls]="controls" [autoplay]="autoplay" [muted]="muted" [loop]="loop" (stateChanges)="onChildStateChange($event)" [videoData]="videoData" ([playing])="playing" [poster]="poster"></publication-native-video>
+
   <publication-vimeo-player *ngSwitchCase="1"
     [controls]="controls" [autoplay]="autoplay" [loop]="loop" (stateChanges)="onChildStateChange($event)" [videoData]="videoData" ([playing])="playing"></publication-vimeo-player>
+
 </ng-container>
