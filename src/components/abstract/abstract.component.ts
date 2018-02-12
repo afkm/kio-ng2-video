@@ -60,6 +60,9 @@ export class AbstractVideoComponent <T extends keyof typeof VideoType> implement
   @ViewChild('iframe') iframeQuery:QueryList<ElementRef>
 
   protected updateVideoState ( nextState:VideoState ) {
+
+    //console.log(`${this.constructor.name}::updateVideoState - ${VideoState[this.videoState]} to ${VideoState[nextState]}`)
+    
     this.videoState = nextState
     this.stateChanges.emit(nextState)
     if ( nextState === VideoState.finished ) {

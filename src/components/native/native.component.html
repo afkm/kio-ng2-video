@@ -1,6 +1,6 @@
 <ng-container *ngIf="muted">
     <video
-        muted [controls]="controls" [autoplay]="autoplay" [loop]="loop" [poster]="poster" playsinline
+        muted [controls]="controls" [autoplay]="autoplay" [loop]="loop" [poster]="poster" inline playsinline
         (loadstart)="onEvent('loading',$event)"
         (canplay)="onEvent('ready',$event)"
         (play)="onEvent('playing',$event)"
@@ -14,7 +14,7 @@
 
 <ng-container *ngIf="!muted">
     <video
-        [controls]="controls" [autoplay]="autoplay" [loop]="loop" [poster]="poster" playsinline
+        [controls]="controls" [autoplay]="autoplay" [loop]="loop" [poster]="poster" inline playsinline
         (loadstart)="onEvent('loading',$event)"
         (canplay)="onEvent('ready',$event)"
         (play)="onEvent('playing',$event)"

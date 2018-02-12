@@ -31,7 +31,7 @@ export class NativeVideoComponent extends AbstractVideoComponent<'native'> {
 
 
   public playVideo ( ) {
-
+    // not supported for now
   }
 
   protected prepareVideo() {
