@@ -1,4 +1,4 @@
-import { Component, Renderer2, EventEmitter, HostBinding, ElementRef, Injector, Input, Output } from '@angular/core'
+import { Component, SimpleChanges, SimpleChange, ViewChild, Renderer2, EventEmitter, HostBinding, ElementRef, Injector, Input, Output } from '@angular/core'
 import { Observable } from 'rxjs/Observable'
 import { RoutableComponent, ContentDataComponent, ContentLoaderDirective, ResizingService } from 'kio-ng2-component-routing'
 import { KioVideoData } from '../../interfaces/video-node'
@@ -8,6 +8,8 @@ import { VideoEvent } from '../../events/event.class'
 
 import { VideoType } from '../../enums/video-type.enum'
 import { AbstractVideoComponent } from '../abstract/abstract.component'
+import { VimeoVideoComponent } from '../vimeo/vimeo.component'
+
 
 
 @RoutableComponent({
@@ -59,6 +61,8 @@ export class VideoWrapperComponent extends ContentDataComponent {
     return state === VideoState.playing
   } )
 
+  @ViewChild(VimeoVideoComponent) protected vimeoPlayerComponent:VimeoVideoComponent
+
   videoData:KioVideoData
 
   stopped:boolean
@@ -74,7 +78,10 @@ export class VideoWrapperComponent extends ContentDataComponent {
 
 
   playVideo () {
-
+    if ( this.vimeoPlayerComponent ) {
+      //console.log('vimeoPlayerComponent',this.vimeoPlayerComponent)
+      this.vimeoPlayerComponent.playVideo()
+    }
   }
 
   getContainerBounds ():{width:number,height:number} {

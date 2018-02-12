@@ -1,4 +1,4 @@
-import { Component, Input, Output, QueryList, EventEmitter, ViewChild, ElementRef, ViewEncapsulation } from '@angular/core';
+import { Component, Input, Output, QueryList, EventEmitter, ViewChild, ElementRef, ViewEncapsulation, OnChanges, SimpleChange, SimpleChanges } from '@angular/core';
 import { RoutableComponent, ContentDataComponent, ContentLoaderDirective, ResizingService } from 'kio-ng2-component-routing'
 import { VideoState } from '../../enums/video-state.enum'
 import { VideoType } from '../../enums/video-type.enum'
@@ -19,7 +19,7 @@ declare const VimeoPlayer:{new (el:HTMLElement,opts:any):Player}
   styleUrls: ['./vimeo.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class VimeoVideoComponent extends AbstractVideoComponent<'vimeo'> {
+export class VimeoVideoComponent extends AbstractVideoComponent<'vimeo'> implements OnChanges {
 
 
   protected vimeoPlayer:Player
@@ -60,6 +60,20 @@ export class VimeoVideoComponent extends AbstractVideoComponent<'vimeo'> {
   updateBounds ( size:{width:number, height:number} ) {
     this.iframe.nativeElement.setAttribute ( 'width' , size.width + 'px' )
     this.iframe.nativeElement.setAttribute ( 'height' , (size.width / this.getRatio()) + 'px' )
+  }
+
+  ngOnChanges(changes:SimpleChanges) {
+
+    const keys = Object.keys(changes)
+    if ( 'autoplay' in changes ) {
+      if ( changes['autoplay'].currentValue ) {
+        this.playVideo ()
+      } else if ( this.vimeoPlayer ) {
+        this.vimeoPlayer.pause()
+      }
+    }
+    
+
   }
 
 }
